@@ -24,5 +24,6 @@
 
 - (void)addUiToMainScrollView:(UIView *)view;
 - (void)openViewControllerWithName:(NSString *)name;
+- (IBAction)textFieldFinished:(id)sender;
 
 @end

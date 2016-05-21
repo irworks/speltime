@@ -9,11 +9,14 @@
 #import "CustomViewController.h"
 
 @interface SettingsViewController : CustomViewController {
+    
+    NSArray *timeUnitStrings;
+    
     UILabel *timeUnitLbl;
     CustomSegmentedControl *timeUnit;
     
     UILabel *timeValueLbl;
-    UITextField *timeValue;
+    CustomTextField *timeValue;
 }
 
 @end

@@ -17,6 +17,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    timeUnitStrings = [NSArray arrayWithObjects:@"Second", @"Minute", @"Hour", nil];
+    
     [self buildUI];
 }
 
@@ -25,15 +28,31 @@
     
     yPos = UI_HORIZONTAL_MARGIN;
     
-    NSLog(@"Loadded FPT: %ld", [captureSettings fpt]);
+    NSLog(@"Loadded FPT: %d", [captureSettings fpt]);
     
     timeUnitLbl = [self addTitleLabel:@"Time unit:"];
     
-    [self addUiToMainScrollView:timeUnit = [[CustomSegmentedControl alloc] initWithFrameAndItem:CGRectMake(UI_HORIZONTAL_MARGIN, yPos, FULL_WIDTH, 40) items:[NSArray arrayWithObjects:@"Second", @"Minute", @"Hour", nil]]];
+    [self addUiToMainScrollView:timeUnit = [[CustomSegmentedControl alloc] initWithFrameAndItem:CGRectMake(UI_HORIZONTAL_MARGIN, yPos, FULL_WIDTH, 40) items:timeUnitStrings]];
+    [timeUnit addTarget:self action:@selector(changedTimeUnit:) forControlEvents:UIControlEventValueChanged];
     
-    timeValueLbl = [self addTitleLabel:@"Take a picture every"];
-    [self addUiToMainScrollView:timeValue = [[UITextField alloc] initWithFrame:CGRectMake(UI_HORIZONTAL_MARGIN, yPos, FULL_WIDTH, 40)]];
+    timeValueLbl = [self addTitleLabel:@""];
+    [self updateTimeValueLbl];
+    [self addUiToMainScrollView:timeValue = [[CustomTextField alloc] initWithFrame:CGRectMake(UI_HORIZONTAL_MARGIN, yPos, FULL_WIDTH, 40)]];
+    [timeValue setText:[NSString stringWithFormat:@"%d", [captureSettings fpt]]];
+    [timeValue setKeyboardType:UIKeyboardTypeNumberPad];
     
+    UIToolbar *keyboardOverlay = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
+    [keyboardOverlay setItems: [NSArray arrayWithObjects:
+                                [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+                                [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(closeTimeValue:)],
+                            nil]];
+    
+    [timeValue setInputAccessoryView:keyboardOverlay];
+    
+}
+
+- (void)closeTimeValue:(id)sender {
+    [timeValue resignFirstResponder];
 }
 
 - (UILabel *)addTitleLabel:(NSString *)title {
@@ -49,21 +68,25 @@
     return titleLbl;
 }
 
+- (void)changedTimeUnit:(UISegmentedControl *)segment {
+    [self updateTimeValueLbl];
+}
 
+- (void)updateTimeValueLbl {
+    [timeValueLbl setText:[NSString stringWithFormat:@"Amount of pictures every %@:", [timeUnitStrings objectAtIndex:timeUnit.selectedSegmentIndex]]];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [[self captureSettings] setFpt:[[timeValue text] intValue]];
+    [[self captureSettings] setTimeUnit:timeUnit.selectedSegmentIndex];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

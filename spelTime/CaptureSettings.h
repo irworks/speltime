@@ -10,7 +10,7 @@
 
 @interface CaptureSettings : NSObject
 
-@property long fpt;
+@property int fpt;
 @property int timeUnit;
 
 - (id)settingsWithDefaultValues;
