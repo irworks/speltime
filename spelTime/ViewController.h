@@ -7,8 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
+#import "CustomViewController.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : CustomViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVCaptureVideoDataOutputSampleBufferDelegate> {
+    UILabel *framesStatus;
+    UIView *previewView;
+    
+    long capturedFrames;
+    long droppedFrames;
+}
 
 
 @end

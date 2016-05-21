@@ -13,6 +13,13 @@
 		F49678B31CF0738F00112D11 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F49678B11CF0738F00112D11 /* Main.storyboard */; };
 		F49678B51CF0738F00112D11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F49678B41CF0738F00112D11 /* Assets.xcassets */; };
 		F49678B81CF0738F00112D11 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F49678B61CF0738F00112D11 /* LaunchScreen.storyboard */; };
+		F49678C11CF073F600112D11 /* CustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F49678C01CF073F600112D11 /* CustomViewController.m */; };
+		F49678C61CF074D300112D11 /* CustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = F49678C51CF074D300112D11 /* CustomButton.m */; };
+		F4E0F0EB1CF07DC000289443 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4E0F0EA1CF07DC000289443 /* AVFoundation.framework */; };
+		F4E0F0EE1CF0895100289443 /* CaptureSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E0F0ED1CF0895100289443 /* CaptureSettings.m */; };
+		F4E0F0F21CF08B9A00289443 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E0F0F11CF08B9A00289443 /* SettingsViewController.m */; };
+		F4E0F0F51CF091C300289443 /* CustomSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E0F0F41CF091C300289443 /* CustomSegmentedControl.m */; };
+		F4E0F0F81CF09AD200289443 /* CustomTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = F4E0F0F71CF09AD200289443 /* CustomTextField.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +33,20 @@
 		F49678B41CF0738F00112D11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F49678B71CF0738F00112D11 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F49678B91CF0738F00112D11 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F49678BF1CF073F600112D11 /* CustomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomViewController.h; sourceTree = "<group>"; };
+		F49678C01CF073F600112D11 /* CustomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomViewController.m; sourceTree = "<group>"; };
+		F49678C31CF0745F00112D11 /* const.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = const.h; sourceTree = "<group>"; };
+		F49678C41CF074D300112D11 /* CustomButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomButton.h; sourceTree = "<group>"; };
+		F49678C51CF074D300112D11 /* CustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomButton.m; sourceTree = "<group>"; };
+		F4E0F0EA1CF07DC000289443 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		F4E0F0EC1CF0895100289443 /* CaptureSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaptureSettings.h; sourceTree = "<group>"; };
+		F4E0F0ED1CF0895100289443 /* CaptureSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaptureSettings.m; sourceTree = "<group>"; };
+		F4E0F0F01CF08B9A00289443 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		F4E0F0F11CF08B9A00289443 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		F4E0F0F31CF091C300289443 /* CustomSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomSegmentedControl.h; sourceTree = "<group>"; };
+		F4E0F0F41CF091C300289443 /* CustomSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomSegmentedControl.m; sourceTree = "<group>"; };
+		F4E0F0F61CF09AD200289443 /* CustomTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextField.h; sourceTree = "<group>"; };
+		F4E0F0F71CF09AD200289443 /* CustomTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTextField.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4E0F0EB1CF07DC000289443 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +64,7 @@
 		F496789C1CF0738F00112D11 = {
 			isa = PBXGroup;
 			children = (
+				F4E0F0EA1CF07DC000289443 /* AVFoundation.framework */,
 				F49678A71CF0738F00112D11 /* spelTime */,
 				F49678A61CF0738F00112D11 /* Products */,
 			);
@@ -58,10 +81,14 @@
 		F49678A71CF0738F00112D11 /* spelTime */ = {
 			isa = PBXGroup;
 			children = (
+				F49678C21CF0743700112D11 /* abstract */,
+				F4E0F0EF1CF08B8000289443 /* conf */,
 				F49678AB1CF0738F00112D11 /* AppDelegate.h */,
 				F49678AC1CF0738F00112D11 /* AppDelegate.m */,
 				F49678AE1CF0738F00112D11 /* ViewController.h */,
 				F49678AF1CF0738F00112D11 /* ViewController.m */,
+				F4E0F0F01CF08B9A00289443 /* SettingsViewController.h */,
+				F4E0F0F11CF08B9A00289443 /* SettingsViewController.m */,
 				F49678B11CF0738F00112D11 /* Main.storyboard */,
 				F49678B41CF0738F00112D11 /* Assets.xcassets */,
 				F49678B61CF0738F00112D11 /* LaunchScreen.storyboard */,
@@ -77,6 +104,39 @@
 				F49678A91CF0738F00112D11 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F49678C21CF0743700112D11 /* abstract */ = {
+			isa = PBXGroup;
+			children = (
+				F49678BF1CF073F600112D11 /* CustomViewController.h */,
+				F49678C01CF073F600112D11 /* CustomViewController.m */,
+				F49678C71CF0760300112D11 /* CustomUI */,
+			);
+			name = abstract;
+			sourceTree = "<group>";
+		};
+		F49678C71CF0760300112D11 /* CustomUI */ = {
+			isa = PBXGroup;
+			children = (
+				F49678C41CF074D300112D11 /* CustomButton.h */,
+				F49678C51CF074D300112D11 /* CustomButton.m */,
+				F4E0F0F61CF09AD200289443 /* CustomTextField.h */,
+				F4E0F0F71CF09AD200289443 /* CustomTextField.m */,
+				F4E0F0F31CF091C300289443 /* CustomSegmentedControl.h */,
+				F4E0F0F41CF091C300289443 /* CustomSegmentedControl.m */,
+			);
+			name = CustomUI;
+			sourceTree = "<group>";
+		};
+		F4E0F0EF1CF08B8000289443 /* conf */ = {
+			isa = PBXGroup;
+			children = (
+				F49678C31CF0745F00112D11 /* const.h */,
+				F4E0F0EC1CF0895100289443 /* CaptureSettings.h */,
+				F4E0F0ED1CF0895100289443 /* CaptureSettings.m */,
+			);
+			name = conf;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,8 +210,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				F49678B01CF0738F00112D11 /* ViewController.m in Sources */,
+				F49678C61CF074D300112D11 /* CustomButton.m in Sources */,
+				F4E0F0EE1CF0895100289443 /* CaptureSettings.m in Sources */,
+				F4E0F0F51CF091C300289443 /* CustomSegmentedControl.m in Sources */,
 				F49678AD1CF0738F00112D11 /* AppDelegate.m in Sources */,
 				F49678AA1CF0738F00112D11 /* main.m in Sources */,
+				F49678C11CF073F600112D11 /* CustomViewController.m in Sources */,
+				F4E0F0F81CF09AD200289443 /* CustomTextField.m in Sources */,
+				F4E0F0F21CF08B9A00289443 /* SettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +366,7 @@
 				F49678BE1CF0738F00112D11 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
