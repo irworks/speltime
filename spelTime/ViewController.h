@@ -14,11 +14,17 @@
     AVCaptureSession *session;
     AVCaptureDevice *captureDevice;
     
+    CustomButton *toggleCaptureButton;
+    
     UILabel *framesStatus;
     UIView *previewView;
     
     long capturedFrames;
     long droppedFrames;
+    
+    BOOL saveMode;
+    
+    NSTimer *mainTimer;
 }
 
 

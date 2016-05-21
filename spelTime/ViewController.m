@@ -20,6 +20,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [self setCaptureSettings:[[CaptureSettings alloc] settingsWithDefaultValues]];
+    saveMode = NO;
     
     [self buildUI];
 }
@@ -35,7 +36,8 @@
     [framesStatus setAdjustsFontSizeToFitWidth:YES];
     [framesStatus setTextAlignment:NSTextAlignmentCenter];
     
-    [self addUiToMainScrollView:[[CustomButton alloc] initWithFrame:CGRectMake(UI_HORIZONTAL_MARGIN, yPos, self.view.frame.size.width-UI_HORIZONTAL_MARGIN*2, BUTTON_HEIGHT) title:@"Start Capture"]];
+    [self addUiToMainScrollView:toggleCaptureButton = [[CustomButton alloc] initWithFrame:CGRectMake(UI_HORIZONTAL_MARGIN, yPos, self.view.frame.size.width-UI_HORIZONTAL_MARGIN*2, BUTTON_HEIGHT) title:@"Start Capture"]];
+    [toggleCaptureButton addTarget:self action:@selector(toggleCapture:) forControlEvents:UIControlEventTouchUpInside];
     
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewTouched:)];
     [singleTap setNumberOfTapsRequired:1];
@@ -43,24 +45,59 @@
     [previewView setUserInteractionEnabled:YES];
     [previewView addGestureRecognizer:singleTap];
     
-    [self takePhotos];
+    [self startPreview];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    long fps = [[self captureSettings] fpt];
+- (void)toggleCapture:(id)sender {
+    saveMode = !saveMode;
+    droppedFrames = 0;
+    capturedFrames = 0;
     
-    switch([[self captureSettings] timeUnit]) {
-        case 1:
-            fps /= 60;
-            break;
-        case 2:
-            fps /= 60;
-            fps /= 24;
-            break;
+    if(saveMode) {
+        [toggleCaptureButton setTitle:@"Stop Capture" forState:UIControlStateNormal];
+        
+        long frameEvery = [[self captureSettings] fpt];
+        
+        switch([[self captureSettings] timeUnit]) {
+            case 1:
+                frameEvery *= 60;
+                break;
+            case 2:
+                frameEvery = 60 * 60 * frameEvery;
+                break;
+        }
+        
+        mainTimer = [NSTimer scheduledTimerWithTimeInterval:frameEvery target:self selector:@selector(timerFireEvent:) userInfo:nil repeats:YES];
+        [self stopSession:nil];
+        
+    }else{
+        
+        if(mainTimer != nil) {
+            [mainTimer invalidate];
+        }
+        
+        [toggleCaptureButton setTitle:@"Start Capture" forState:UIControlStateNormal];
+    }
+    
+    [self resetFramerate:nil];
+}
+
+- (void)timerFireEvent:(id)sender {
+    if(![session isRunning]) {
+        [session startRunning];
+    }
+}
+
+- (void)stopSession:(id)sender {
+    if([session isRunning]) {
+        [session stopRunning];
     }
 }
 
 - (void)previewTouched:(id)sender {
+    if(![session isRunning]){
+        [session startRunning];
+    }
     [self setPreviewFrameRate:15];
     
     [self performSelector:@selector(resetFramerate:) withObject:nil afterDelay:10.0f];
@@ -77,7 +114,7 @@
     [captureDevice unlockForConfiguration];
 }
 
-- (void)takePhotos {
+- (void)startPreview {
     session = [[AVCaptureSession alloc] init];
     [session setSessionPreset:AVCaptureSessionPresetPhoto];
     
@@ -94,6 +131,8 @@
     // Create a VideoDataOutput and add it to the session
     AVCaptureVideoDataOutput *output = [[AVCaptureVideoDataOutput alloc] init];
     [output setSampleBufferDelegate:self queue:dispatch_queue_create("VideoDataOutputQueue", DISPATCH_QUEUE_SERIAL)];
+
+    [output setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
     
     if([session canAddOutput:output]) {
         NSLog(@"Adding output: %@", output);
@@ -112,6 +151,7 @@
     [rootLayer addSublayer:previewLayer];
     
     [session startRunning];
+    [self previewTouched:nil];
 }
 
 - (void)openSettings:(id)sender {
@@ -124,13 +164,60 @@
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
     
-    //UIImage *image = [self imageFromSampleBuffer:sampleBuffer];
-    // Add your code here that uses the image.
+    UIImage *image = [self imageFromSampleBuffer:sampleBuffer];
+    
+    if(saveMode) {
+        NSLog(@"Saving frame...");
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+        [self stopSession:nil];
+    }
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         capturedFrames++;
         double dropPercentage = round((double)droppedFrames / (double)(droppedFrames+capturedFrames) * 100);
         [framesStatus setText:[NSString stringWithFormat:@"Frames: %ld | Dropped: %ld (%.2f%%)", capturedFrames, droppedFrames, dropPercentage]];
     });
+}
+
+
+/* FROM: https://developer.apple.com/library/ios/qa/qa1702/_index.html */
+- (UIImage *) imageFromSampleBuffer:(CMSampleBufferRef) sampleBuffer {
+    // Get a CMSampleBuffer's Core Video image buffer for the media data
+    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    // Lock the base address of the pixel buffer
+    CVPixelBufferLockBaseAddress(imageBuffer, 0);
+    
+    // Get the number of bytes per row for the pixel buffer
+    void *baseAddress = CVPixelBufferGetBaseAddress(imageBuffer);
+    
+    // Get the number of bytes per row for the pixel buffer
+    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
+    // Get the pixel buffer width and height
+    size_t width = CVPixelBufferGetWidth(imageBuffer);
+    size_t height = CVPixelBufferGetHeight(imageBuffer);
+    
+    // Create a device-dependent RGB color space
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    // Create a bitmap graphics context with the sample buffer data
+    CGContextRef context = CGBitmapContextCreate(baseAddress, width, height, 8,
+                                                 bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+    // Create a Quartz image from the pixel data in the bitmap graphics context
+    CGImageRef quartzImage = CGBitmapContextCreateImage(context);
+    // Unlock the pixel buffer
+    CVPixelBufferUnlockBaseAddress(imageBuffer,0);
+    
+    // Free up the context and color space
+    CGContextRelease(context);
+    CGColorSpaceRelease(colorSpace);
+    
+    // Create an image object from the Quartz image
+    UIImage *image = [UIImage imageWithCGImage:quartzImage];
+    
+    // Release the Quartz image
+    CGImageRelease(quartzImage);
+    
+    return (image);
 }
 
 - (void)didReceiveMemoryWarning {

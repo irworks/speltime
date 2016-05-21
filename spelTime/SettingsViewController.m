@@ -73,14 +73,14 @@
 }
 
 - (void)updateTimeValueLbl {
-    [timeValueLbl setText:[NSString stringWithFormat:@"Amount of pictures every %@:", [timeUnitStrings objectAtIndex:timeUnit.selectedSegmentIndex]]];
+    [timeValueLbl setText:[NSString stringWithFormat:@"Delay between pictues (in %@s):", [timeUnitStrings objectAtIndex:timeUnit.selectedSegmentIndex]]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     [[self captureSettings] setFpt:[[timeValue text] intValue]];
-    [[self captureSettings] setTimeUnit:timeUnit.selectedSegmentIndex];
+    [[self captureSettings] setTimeUnit:(int)timeUnit.selectedSegmentIndex];
 }
 
 - (void)didReceiveMemoryWarning {
