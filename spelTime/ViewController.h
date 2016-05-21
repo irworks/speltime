@@ -11,6 +11,9 @@
 #import "CustomViewController.h"
 
 @interface ViewController : CustomViewController<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVCaptureVideoDataOutputSampleBufferDelegate> {
+    AVCaptureSession *session;
+    AVCaptureDevice *captureDevice;
+    
     UILabel *framesStatus;
     UIView *previewView;
     

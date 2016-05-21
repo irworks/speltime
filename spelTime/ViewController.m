@@ -36,15 +36,55 @@
     [framesStatus setTextAlignment:NSTextAlignmentCenter];
     
     [self addUiToMainScrollView:[[CustomButton alloc] initWithFrame:CGRectMake(UI_HORIZONTAL_MARGIN, yPos, self.view.frame.size.width-UI_HORIZONTAL_MARGIN*2, BUTTON_HEIGHT) title:@"Start Capture"]];
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(previewTouched:)];
+    [singleTap setNumberOfTapsRequired:1];
+    
+    [previewView setUserInteractionEnabled:YES];
+    [previewView addGestureRecognizer:singleTap];
+    
     [self takePhotos];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    long fps = [[self captureSettings] fpt];
+    
+    switch([[self captureSettings] timeUnit]) {
+        case 1:
+            fps /= 60;
+            break;
+        case 2:
+            fps /= 60;
+            fps /= 24;
+            break;
+    }
+}
+
+- (void)previewTouched:(id)sender {
+    [self setPreviewFrameRate:15];
+    
+    [self performSelector:@selector(resetFramerate:) withObject:nil afterDelay:10.0f];
+}
+
+- (void)resetFramerate:(id)sender {
+    [self setPreviewFrameRate:1];
+}
+
+- (void)setPreviewFrameRate:(int)fps {
+    [captureDevice lockForConfiguration:nil];
+    [captureDevice setActiveVideoMinFrameDuration:CMTimeMake(1, fps)];
+    [captureDevice setActiveVideoMaxFrameDuration:CMTimeMake(1, fps)];
+    [captureDevice unlockForConfiguration];
+}
+
 - (void)takePhotos {
-    AVCaptureSession *session = [[AVCaptureSession alloc] init];
+    session = [[AVCaptureSession alloc] init];
     [session setSessionPreset:AVCaptureSessionPresetPhoto];
     
+    captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    
     NSError *error;
-    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:[AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo] error:&error];
+    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
 
     if([session canAddInput:input]) {
         NSLog(@"Adding input: %@", input);
