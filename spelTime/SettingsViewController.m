@@ -35,6 +35,10 @@
     [self addUiToMainScrollView:timeUnit = [[CustomSegmentedControl alloc] initWithFrameAndItem:CGRectMake(UI_HORIZONTAL_MARGIN, yPos, FULL_WIDTH, 40) items:timeUnitStrings]];
     [timeUnit addTarget:self action:@selector(changedTimeUnit:) forControlEvents:UIControlEventValueChanged];
     
+    if([[self captureSettings] timeUnit] < [timeUnitStrings count]) {
+        [timeUnit setSelectedSegmentIndex:[[self captureSettings] timeUnit]];
+    }
+    
     timeValueLbl = [self addTitleLabel:@""];
     [self updateTimeValueLbl];
     [self addUiToMainScrollView:timeValue = [[CustomTextField alloc] initWithFrame:CGRectMake(UI_HORIZONTAL_MARGIN, yPos, FULL_WIDTH, 40)]];
@@ -52,6 +56,12 @@
 }
 
 - (void)closeTimeValue:(id)sender {
+    
+    if([[timeValue text] intValue] <= 0) {
+        [self showUIAlertWithTitle:APP_NAME message:@"Please enter a valid number. (number > 0)"];
+        [timeValue setText:[NSString stringWithFormat:@"%d", [captureSettings delay]]];
+    }
+    
     [timeValue resignFirstResponder];
 }
 
