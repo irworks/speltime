@@ -67,7 +67,7 @@
     if(saveMode) {
         [toggleCaptureButton setTitle:@"Stop Capture" forState:UIControlStateNormal];
         
-        long frameEvery = [[self captureSettings] fpt];
+        long frameEvery = [[self captureSettings] delay];
         
         switch([[self captureSettings] timeUnit]) {
             case 1:

@@ -10,7 +10,7 @@
 
 @interface CaptureSettings : NSObject
 
-@property int fpt;
+@property int delay;
 @property int timeUnit;
 
 - (id)settingsWithDefaultValues;

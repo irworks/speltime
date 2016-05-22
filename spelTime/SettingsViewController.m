@@ -28,7 +28,7 @@
     
     yPos = UI_HORIZONTAL_MARGIN;
     
-    NSLog(@"Loadded FPT: %d", [captureSettings fpt]);
+    NSLog(@"Loadded FPT: %d", [captureSettings delay]);
     
     timeUnitLbl = [self addTitleLabel:@"Time unit:"];
     
@@ -38,7 +38,7 @@
     timeValueLbl = [self addTitleLabel:@""];
     [self updateTimeValueLbl];
     [self addUiToMainScrollView:timeValue = [[CustomTextField alloc] initWithFrame:CGRectMake(UI_HORIZONTAL_MARGIN, yPos, FULL_WIDTH, 40)]];
-    [timeValue setText:[NSString stringWithFormat:@"%d", [captureSettings fpt]]];
+    [timeValue setText:[NSString stringWithFormat:@"%d", [captureSettings delay]]];
     [timeValue setKeyboardType:UIKeyboardTypeNumberPad];
     
     UIToolbar *keyboardOverlay = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
@@ -79,7 +79,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    [[self captureSettings] setFpt:[[timeValue text] intValue]];
+    [[self captureSettings] setDelay:[[timeValue text] intValue]];
     [[self captureSettings] setTimeUnit:(int)timeUnit.selectedSegmentIndex];
 }
 

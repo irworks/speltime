@@ -9,10 +9,10 @@
 #import "CaptureSettings.h"
 
 @implementation CaptureSettings
-@synthesize fpt, timeUnit;
+@synthesize delay, timeUnit;
 
 - (id)settingsWithDefaultValues {
-    fpt = 10;
+    delay = 10;
     timeUnit = 0;
     
     /* 
