@@ -23,6 +23,7 @@
     saveMode = NO;
     
     [self buildUI];
+    [self checkPermissions];
 }
 
 - (void)buildUI {
@@ -44,8 +45,18 @@
     
     [previewView setUserInteractionEnabled:YES];
     [previewView addGestureRecognizer:singleTap];
-    
-    [self startPreview];
+}
+
+- (void)checkPermissions {
+    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+        if(granted) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self startPreview];
+            });
+        }else{
+            [self showUIAlertWithTitle:APP_NAME message:[NSString stringWithFormat:@"%@ needs to have access to your camera to work properly. Please grant the permission and restart the application.", APP_NAME]];
+        }
+    }];
 }
 
 - (void)toggleCapture:(id)sender {

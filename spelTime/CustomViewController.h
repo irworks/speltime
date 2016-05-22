@@ -7,7 +7,10 @@
 //
 
 #import "const.h"
+
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
+
 #import "CustomButton.h"
 #import "CustomSegmentedControl.h"
 #import "CustomTextField.h"
@@ -24,6 +27,7 @@
 
 - (void)addUiToMainScrollView:(UIView *)view;
 - (void)openViewControllerWithName:(NSString *)name;
+- (void)showUIAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (IBAction)textFieldFinished:(id)sender;
 
 @end

@@ -54,22 +54,11 @@
         nextViewController = [self.storyboard instantiateViewControllerWithIdentifier:name];
     }
     @catch (NSException *exception) {
-        UIAlertController *alertController = [UIAlertController
-                                              alertControllerWithTitle:@"Error"
-                                              message:@"This view is not availible."
-                                              preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *okAction = [UIAlertAction
-                                   actionWithTitle:NSLocalizedString(@"OK", @"OK action")
-                                   style:UIAlertActionStyleDefault
-                                   handler:nil];
-        
-        [alertController addAction:okAction];
         
         if ([name isEqualToString:@"ViewController"]) {
             [self.navigationController popToRootViewControllerAnimated:YES];
         }else{
-            [self presentViewController:alertController animated:YES completion:nil];
+            [self showUIAlertWithTitle:@"Error" message:@"The requested View is not available."];
         }
         
         return;
@@ -78,6 +67,23 @@
         nextViewController.captureSettings = [self captureSettings];
         [self.navigationController pushViewController:nextViewController animated:YES];
     }
+}
+
+- (void)showUIAlertWithTitle:(NSString *)title message:(NSString *)message {
+    
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:title
+                                          message:message
+                                          preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *okAction = [UIAlertAction
+                               actionWithTitle:NSLocalizedString(@"OK", @"OK action")
+                               style:UIAlertActionStyleDefault
+                               handler:nil];
+    
+    [alertController addAction:okAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 
