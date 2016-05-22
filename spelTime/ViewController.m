@@ -20,6 +20,8 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [self setCaptureSettings:[[CaptureSettings alloc] settingsWithDefaultValues]];
+    [[self captureSettings] load];
+    
     saveMode = NO;
     
     [self buildUI];

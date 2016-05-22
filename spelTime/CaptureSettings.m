@@ -12,7 +12,7 @@
 @synthesize delay, timeUnit;
 
 - (id)settingsWithDefaultValues {
-    delay = 10;
+    delay    = 10;
     timeUnit = 0;
     
     /* 
@@ -23,6 +23,24 @@
      */
     
     return self;
+}
+
+- (void)save {
+    userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    [userDefaults setInteger:delay forKey:@"delay"];
+    [userDefaults setInteger:timeUnit forKey:@"timeUnit"];
+}
+
+- (void)load {
+    userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    if([userDefaults integerForKey:@"delay"] <= 0) {
+        return;
+    }
+    
+    delay    = [userDefaults integerForKey:@"delay"];
+    timeUnit = [userDefaults integerForKey:@"timeUnit"];
 }
 
 @end

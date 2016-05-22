@@ -81,6 +81,7 @@
     
     [[self captureSettings] setDelay:[[timeValue text] intValue]];
     [[self captureSettings] setTimeUnit:(int)timeUnit.selectedSegmentIndex];
+    [[self captureSettings] save];
 }
 
 - (void)didReceiveMemoryWarning {
